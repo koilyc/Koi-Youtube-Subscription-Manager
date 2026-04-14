@@ -359,25 +359,22 @@ class SidePanelApp {
     const channelName = this.#unsubscribeChannelName;
     if (!channelId) return;
 
-    const btn = document.getElementById('btn-confirm-unsubscribe') as HTMLButtonElement;
-    btn.disabled = true;
-    btn.textContent = 'Unsubscribing...';
-
     try {
-      await YouTubeApiService.unsubscribe(channelId);
-      await ChannelService.remove(channelId);
+      // Open the channel page so the user can manually unsubscribe on YouTube
+      const channel = this.#channels.find((ch) => ch.id === channelId);
+      if (channel) {
+        chrome.tabs.create({ url: channel.url });
+      }
 
-      // Update cached data locally
+      // Remove from local storage
+      await ChannelService.remove(channelId);
       this.#channels = this.#channels.filter((ch) => ch.id !== channelId);
 
       this.#closeModal('modal-unsubscribe');
-      Toast.show(`Unsubscribed from "${channelName}".`, 'success');
+      Toast.show(`"${channelName}" removed. Unsubscribe on YouTube to complete.`, 'success');
       this.#render();
     } catch (err) {
-      Toast.show(`Unsubscribe failed: ${(err as Error).message}`, 'error');
-    } finally {
-      btn.disabled = false;
-      btn.textContent = 'Unsubscribe';
+      Toast.show(`Remove failed: ${(err as Error).message}`, 'error');
     }
   }
 

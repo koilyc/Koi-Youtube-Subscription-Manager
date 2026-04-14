@@ -6,13 +6,8 @@ interface YouTubeSnippet {
   thumbnails?: { default?: { url: string } };
 }
 
-interface YouTubeSubscriptionItem {
-  id: string;
-  snippet: YouTubeSnippet;
-}
-
 interface YouTubeSubscriptionResponse {
-  items?: YouTubeSubscriptionItem[];
+  items?: Array<{ snippet: YouTubeSnippet }>;
   nextPageToken?: string;
 }
 
@@ -112,53 +107,4 @@ export class YouTubeApiService {
     return subscriptions;
   }
 
-  /**
-   * Unsubscribe from a channel by its channel ID.
-   * Requires youtube (non-readonly) OAuth scope.
-   */
-  static async unsubscribe(channelId: string): Promise<void> {
-    const token = await this.getAuthToken(true);
-
-    // Step 1: Find the subscription ID for the given channel
-    const params = new URLSearchParams({
-      part: 'id',
-      mine: 'true',
-      forChannelId: channelId,
-    });
-
-    const listResponse = await fetch(`${this.#API_BASE}/subscriptions?${params}`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-
-    if (!listResponse.ok) {
-      const error = await listResponse.json().catch(() => ({}));
-      throw new Error(
-        (error as { error?: { message?: string } })?.error?.message
-          || `YouTube API error: ${listResponse.status}`,
-      );
-    }
-
-    const listData: YouTubeSubscriptionResponse = await listResponse.json();
-    const subscriptionId = listData.items?.[0]?.id;
-    if (!subscriptionId) {
-      throw new Error('Subscription not found for this channel.');
-    }
-
-    // Step 2: Delete the subscription
-    const deleteResponse = await fetch(
-      `${this.#API_BASE}/subscriptions?id=${subscriptionId}`,
-      {
-        method: 'DELETE',
-        headers: { Authorization: `Bearer ${token}` },
-      },
-    );
-
-    if (!deleteResponse.ok && deleteResponse.status !== 204) {
-      const error = await deleteResponse.json().catch(() => ({}));
-      throw new Error(
-        (error as { error?: { message?: string } })?.error?.message
-          || `Failed to unsubscribe: ${deleteResponse.status}`,
-      );
-    }
-  }
 }
