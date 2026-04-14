@@ -56,7 +56,6 @@ export class ChannelRenderer {
       <div class="channel-item__avatar">${avatarHtml}</div>
       <div class="channel-item__info">
         <div class="channel-item__name" title="${this.#esc(channel.name)}">${this.#esc(channel.name)}</div>
-        <div class="channel-item__url" title="${this.#esc(channel.url)}">${this.#esc(channel.url)}</div>
       </div>
       <div class="channel-item__actions">
         ${this.#renderMoveSelect(channel, folders)}

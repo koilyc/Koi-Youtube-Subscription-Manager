@@ -584,14 +584,6 @@ html, body {
   text-overflow: ellipsis;
 }
 
-.channel-item__url {
-  font-size: 11px;
-  color: var(--yt-text-secondary);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
 .channel-item__actions {
   display: flex;
   gap: 2px;
