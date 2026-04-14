@@ -1,0 +1,32 @@
+{
+  "manifest_version": 3,
+  "name": "Koi's YouTube Subscription Manager",
+  "version": "2.0.0",
+  "description": "A better way to manage your YouTube subscriptions with folders and categories.",
+  "permissions": ["storage", "identity", "sidePanel"],
+  "oauth2": {
+    "client_id": "224413468061-h2pvo1nqb2ebc54c0phn2i0aqfotmdoe.apps.googleusercontent.com",
+    "scopes": [
+      "https://www.googleapis.com/auth/youtube.readonly"
+    ]
+  },
+  "side_panel": {
+    "default_path": "src/sidepanel/sidepanel.html"
+  },
+  "background": {
+    "service_worker": "dist/background/background.js",
+    "type": "module"
+  },
+  "action": {
+    "default_icon": {
+      "16": "assets/icons/icon16.png",
+      "48": "assets/icons/icon48.png",
+      "128": "assets/icons/icon128.png"
+    }
+  },
+  "icons": {
+    "16": "assets/icons/icon16.png",
+    "48": "assets/icons/icon48.png",
+    "128": "assets/icons/icon128.png"
+  }
+}

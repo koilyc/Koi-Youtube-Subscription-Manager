@@ -1,0 +1,19 @@
+{
+  "name": "koi-youtube-subscription-manager",
+  "version": "1.0.0",
+  "description": "Koi YouTube Subscription Manager 是一個 Google Chrome Extension，可以改善目前 YouTube 介面上混亂的訂閱頻道管理畫面，讓管理訂閱頻道變得更加直接且美觀",
+  "type": "module",
+  "scripts": {
+    "build": "node esbuild.config.mjs",
+    "watch": "node esbuild.config.mjs --watch",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/chrome": "^0.1.38",
+    "esbuild": "^0.27.5",
+    "typescript": "^6.0.2"
+  }
+}
