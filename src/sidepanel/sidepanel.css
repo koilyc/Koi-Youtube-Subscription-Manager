@@ -323,12 +323,29 @@ html, body {
 .input-color {
   width: 32px;
   height: 32px;
-  padding: 2px;
+  padding: 5px;
   background: var(--yt-bg-primary);
   border: 1px solid var(--yt-border);
   border-radius: 50%;
   cursor: pointer;
   flex-shrink: 0;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.input-color::-webkit-color-swatch-wrapper {
+  padding: 0;
+  border-radius: 50%;
+}
+
+.input-color::-webkit-color-swatch {
+  border: none;
+  border-radius: 50%;
+}
+
+.input-color::-moz-color-swatch {
+  border: none;
+  border-radius: 50%;
 }
 
 /* ===== Search Bar ===== */
