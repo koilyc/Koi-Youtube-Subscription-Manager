@@ -200,6 +200,24 @@ html, body {
   background: rgba(255, 0, 0, 0.1);
 }
 
+.btn--icon.btn--unsubscribe {
+  color: var(--yt-text-secondary);
+}
+
+.btn--icon.btn--unsubscribe:hover {
+  color: var(--yt-accent);
+  background: rgba(255, 0, 0, 0.1);
+}
+
+.btn--danger-fill {
+  background: var(--yt-accent);
+  color: #fff;
+}
+
+.btn--danger-fill:hover {
+  background: var(--yt-accent-hover);
+}
+
 .btn:disabled {
   opacity: 0.5;
   cursor: not-allowed;
@@ -263,6 +281,16 @@ html, body {
 
 .modal__close:hover {
   background: var(--yt-bg-hover);
+  color: var(--yt-text-primary);
+}
+
+.modal__text {
+  font-size: 14px;
+  color: var(--yt-text-secondary);
+  line-height: 1.5;
+}
+
+.modal__text strong {
   color: var(--yt-text-primary);
 }
 

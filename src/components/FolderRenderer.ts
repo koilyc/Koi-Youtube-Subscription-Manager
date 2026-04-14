@@ -18,6 +18,7 @@ export class FolderRenderer {
     callbacks: FolderCallbacks,
     allFolders: Folder[],
     viewMode: ViewMode = 'list',
+    onUnsubscribe?: (channelId: string, channelName: string) => void,
   ): HTMLElement {
     const section = document.createElement('div');
     section.className = 'folder-section';
@@ -52,7 +53,7 @@ export class FolderRenderer {
 
     for (const channel of channels) {
       body.appendChild(
-        ChannelRenderer.render(channel, { onMove: callbacks.onMoveChannel }, allFolders, viewMode),
+        ChannelRenderer.render(channel, { onMove: callbacks.onMoveChannel, onUnsubscribe }, allFolders, viewMode),
       );
     }
 

@@ -100,6 +100,9 @@ class SidePanelApp {
     document.getElementById('input-rename-folder')!
       .addEventListener('keydown', (e) => { if (e.key === 'Enter') this.#handleConfirmRename(); });
 
+    document.getElementById('btn-confirm-unsubscribe')!
+      .addEventListener('click', () => this.#handleConfirmUnsubscribe());
+
     // Drag-drop to uncategorize
     this.#content.addEventListener('dragover', (e) => e.preventDefault());
     this.#content.addEventListener('drop', (e) => {
@@ -161,6 +164,8 @@ class SidePanelApp {
       ? this.#channels.filter((ch) => ch.name.toLowerCase().includes(this.#searchQuery))
       : this.#channels;
 
+    const onUnsubscribe = (cid: string, name: string) => this.#handleUnsubscribe(cid, name);
+
     const callbacks = {
       onMoveChannel: (cid: string, fid: string | null) => this.#handleMoveChannel(cid, fid),
       onRemoveFolder: (id: string, name: string) => this.#handleRemoveFolder(id, name),
@@ -174,7 +179,7 @@ class SidePanelApp {
       // In search mode, skip empty folders
       if (this.#searchQuery && folderChannels.length === 0) continue;
 
-      const section = FolderRenderer.render(folder, folderChannels, callbacks, this.#folders, this.#viewMode);
+      const section = FolderRenderer.render(folder, folderChannels, callbacks, this.#folders, this.#viewMode, onUnsubscribe);
       if (this.#expandedIds.has(folder.id)) {
         section.querySelector('.folder-header__arrow')?.classList.add('expanded');
         section.querySelector('.folder-body, .folder-body--grid')?.classList.add('expanded');
@@ -185,7 +190,7 @@ class SidePanelApp {
     // Render uncategorized
     const uncategorized = filteredChannels.filter((ch) => ch.folderId === null);
     if (uncategorized.length > 0) {
-      const section = this.#buildUncategorizedSection(uncategorized, callbacks);
+      const section = this.#buildUncategorizedSection(uncategorized, callbacks, onUnsubscribe);
       if (!this.#uncategorizedExpanded) {
         section.querySelector('.uncategorized-header__arrow')?.classList.remove('expanded');
         section.querySelector('.folder-body, .folder-body--grid')?.classList.remove('expanded');
@@ -208,7 +213,11 @@ class SidePanelApp {
     this.#uncategorizedExpanded = !uncatArrow || uncatArrow.classList.contains('expanded');
   }
 
-  #buildUncategorizedSection(channels: Channel[], callbacks: FolderCallbacks): HTMLElement {
+  #buildUncategorizedSection(
+    channels: Channel[],
+    callbacks: FolderCallbacks,
+    onUnsubscribe?: (channelId: string, channelName: string) => void,
+  ): HTMLElement {
     const section = document.createElement('div');
     section.className = 'folder-section';
 
@@ -229,7 +238,7 @@ class SidePanelApp {
 
     for (const ch of channels) {
       body.appendChild(
-        ChannelRenderer.render(ch, { onMove: callbacks.onMoveChannel }, this.#folders, this.#viewMode),
+        ChannelRenderer.render(ch, { onMove: callbacks.onMoveChannel, onUnsubscribe }, this.#folders, this.#viewMode),
       );
     }
 
@@ -313,6 +322,8 @@ class SidePanelApp {
   }
 
   #renameFolderId = '';
+  #unsubscribeChannelId = '';
+  #unsubscribeChannelName = '';
 
   #handleRenameFolder(id: string, currentName: string): void {
     this.#renameFolderId = id;
@@ -333,6 +344,40 @@ class SidePanelApp {
       await this.#loadDataAndRender();
     } catch (err) {
       Toast.show((err as Error).message, 'error');
+    }
+  }
+
+  #handleUnsubscribe(channelId: string, channelName: string): void {
+    this.#unsubscribeChannelId = channelId;
+    this.#unsubscribeChannelName = channelName;
+    document.getElementById('unsubscribe-channel-name')!.textContent = channelName;
+    this.#openModal('modal-unsubscribe');
+  }
+
+  async #handleConfirmUnsubscribe(): Promise<void> {
+    const channelId = this.#unsubscribeChannelId;
+    const channelName = this.#unsubscribeChannelName;
+    if (!channelId) return;
+
+    const btn = document.getElementById('btn-confirm-unsubscribe') as HTMLButtonElement;
+    btn.disabled = true;
+    btn.textContent = 'Unsubscribing...';
+
+    try {
+      await YouTubeApiService.unsubscribe(channelId);
+      await ChannelService.remove(channelId);
+
+      // Update cached data locally
+      this.#channels = this.#channels.filter((ch) => ch.id !== channelId);
+
+      this.#closeModal('modal-unsubscribe');
+      Toast.show(`Unsubscribed from "${channelName}".`, 'success');
+      this.#render();
+    } catch (err) {
+      Toast.show(`Unsubscribe failed: ${(err as Error).message}`, 'error');
+    } finally {
+      btn.disabled = false;
+      btn.textContent = 'Unsubscribe';
     }
   }
 

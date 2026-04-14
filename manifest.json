@@ -7,7 +7,7 @@
   "oauth2": {
     "client_id": "224413468061-h2pvo1nqb2ebc54c0phn2i0aqfotmdoe.apps.googleusercontent.com",
     "scopes": [
-      "https://www.googleapis.com/auth/youtube.readonly"
+      "https://www.googleapis.com/auth/youtube"
     ]
   },
   "side_panel": {

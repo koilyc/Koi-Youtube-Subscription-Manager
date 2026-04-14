@@ -66,4 +66,11 @@ export class ChannelService {
     const channels = await this.getAll();
     return channels.filter((ch) => ch.folderId === folderId);
   }
+
+  /** Remove a channel from local storage (after unsubscribing via API). */
+  static async remove(channelId: string): Promise<void> {
+    const channels = await this.getAll();
+    const filtered = channels.filter((ch) => ch.id !== channelId);
+    await StorageService.set(STORAGE_KEY, filtered.map((ch) => ch.toJSON()));
+  }
 }

@@ -84,6 +84,23 @@
       </div>
     </div>
 
+    <!-- Unsubscribe Confirmation Modal -->
+    <div class="modal-overlay" id="modal-unsubscribe">
+      <div class="modal">
+        <div class="modal__header">
+          <h2 class="modal__title">Unsubscribe</h2>
+          <button class="modal__close" data-close-modal="modal-unsubscribe">&times;</button>
+        </div>
+        <div class="modal__body">
+          <p class="modal__text">Are you sure you want to unsubscribe from <strong id="unsubscribe-channel-name"></strong>?</p>
+        </div>
+        <div class="modal__footer">
+          <button class="btn btn--ghost" data-close-modal="modal-unsubscribe">Cancel</button>
+          <button class="btn btn--primary btn--danger-fill" id="btn-confirm-unsubscribe">Unsubscribe</button>
+        </div>
+      </div>
+    </div>
+
     <!-- Main Content -->
     <main class="content" id="content">
       <!-- Loading State -->
