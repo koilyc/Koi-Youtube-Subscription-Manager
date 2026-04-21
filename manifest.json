@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "name": "Koi's YouTube Subscription Manager",
-  "version": "2.0.0",
-  "description": "A better way to manage your YouTube subscriptions with folders and categories.",
+  "version": "2.1.0",
+  "description": "Organize your YouTube subscriptions into custom folders and categories.",
   "permissions": ["storage", "identity", "sidePanel"],
   "oauth2": {
     "client_id": "224413468061-h2pvo1nqb2ebc54c0phn2i0aqfotmdoe.apps.googleusercontent.com",
