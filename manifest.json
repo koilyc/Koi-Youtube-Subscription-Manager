@@ -5,7 +5,7 @@
   "description": "Organize your YouTube subscriptions into custom folders and categories.",
   "permissions": ["storage", "identity", "sidePanel"],
   "oauth2": {
-    "client_id": "224413468061-h2pvo1nqb2ebc54c0phn2i0aqfotmdoe.apps.googleusercontent.com",
+    "client_id": "1085194795946-mto7ofsmb6uf8ojdlr6qbvimh3f2llta.apps.googleusercontent.com",
     "scopes": [
       "https://www.googleapis.com/auth/youtube.readonly"
     ]
